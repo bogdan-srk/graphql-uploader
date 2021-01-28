@@ -1,7 +1,9 @@
 import * as yup from 'yup';
+import { ValidationError } from 'apollo-server-errors';
+import { IImageDocument } from '../../../core/database/images';
 
-const ALLOWED_IMAGE_TYPES = ['jpeg', 'jpg', 'png'];
-const MAX_IMAGE_SIZE = 10000;
+export const ALLOWED_IMAGE_TYPES = ['jpeg', 'jpg', 'png'];
+export const MAX_IMAGE_SIZE = 10000;
 
 export const CreateImageInputSchema = yup.object({
   filename: yup
@@ -37,6 +39,14 @@ export const MarkImageAsUploadedInputSchema = yup.object({
     .required()
 });
 
+export const validateContentType = (contentType: string, inputMimeType: string) => {
+  if (contentType !== inputMimeType) {
+    throw new ValidationError("Content type doesn't match extension");
+  }
+};
 
-export type CreateImageInput = yup.InferType<typeof CreateImageInputSchema>;
-export type MarkImageAsUploadedInput = yup.InferType<typeof MarkImageAsUploadedInputSchema>;
+export const validateImageDocExists = (imageDoc: IImageDocument | null) => {
+  if (!imageDoc) {
+    throw new ValidationError('Image not found');
+  }
+};

@@ -1,5 +1,8 @@
 import { IDatabase } from '../core/database';
 import { createGraphQLServer } from '../core/graphql';
+import { ImagesResolvers, ImagesSchema } from '../modules/images/graphql';
+import { IServiceProvider } from '../core/service';
+import { ServiceProvider } from '../core/service';
 
 const MONGO_URI =  'mongodb://localhost:27017/images-upload';
 
@@ -8,10 +11,12 @@ interface IServerSettings {
 }
 
 export class Server {
-  database: IDatabase;
+  readonly database: IDatabase;
+  readonly service: IServiceProvider;
 
   constructor(settings: IServerSettings) {
     this.database = settings.database;
+    this.service = new ServiceProvider(this.database.provider);
   }
 
   async start(): Promise<void> {
@@ -19,12 +24,17 @@ export class Server {
     await this.startGraphQLServer();
   }
 
-  private async startGraphQLServer(): Promise<void> {
-    const { url } = await createGraphQLServer(this.database.provider);
-    console.log(`Graphql Server started at ${url}`);
-  }
-
   private async startDatabase(): Promise<void> {
     await this.database.connect(MONGO_URI);
+  }
+
+  private async startGraphQLServer(): Promise<void> {
+    const { url } = await createGraphQLServer(
+      this.database.provider,
+      this.service,
+      [ ImagesSchema ],
+      [ ImagesResolvers ],
+    );
+    console.log(`Graphql Server started at ${url}`);
   }
 }

@@ -3,30 +3,26 @@ import { IDatabaseProvider } from '../database';
 import { mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
 import { formatError } from './formatError';
 import { IResolverContext } from './graphql.types';
-import * as path from 'path';
-import { readFileSync } from 'fs';
-import glob from 'glob';
-import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
-import { imagesResolvers, imagesTypeDefs } from '../../modules/images/graphql';
+import { RootResolvers } from './root-resolvers';
+import { RootSchema } from './root-schema';
+import { IServiceProvider } from '../service/service-provider.types';
 
 export * from './graphql.types';
 
 export const createGraphQLServer = async (
   database: IDatabaseProvider,
-  // typeDefs: any,
-  // resolvers: any,
+  service: IServiceProvider,
+  typeDefs: any[],
+  resolvers: any[],
 ): Promise<ServerInfo> => {
-  const typeDefs = imagesTypeDefs;
-  const resolvers = imagesResolvers;
   const config = {
     debug: false,
-    typeDefs,
-    resolvers,
-    // schema: genSchema(),
+    schema: genSchema(typeDefs, resolvers),
     formatError,
     context: async (): Promise<IResolverContext> => {
       return {
         database,
+        service,
       };
     },
   };
@@ -36,21 +32,10 @@ export const createGraphQLServer = async (
 };
 
 
-export const genSchema = () => {
-  const modulesPath = path.join(__dirname, '../../modules');
-  const types = glob
-    .sync(`${ modulesPath }/**/*.graphql`)
-    .map(file => readFileSync(file, { encoding: 'utf8' }));
-  const resolvers = glob
-    .sync(`${ modulesPath }/**/resolvers.?s`)
-    .map(file => require(file).resolvers);
-  resolvers.push({
-      JSON: GraphQLJSON,
-      JSONObject: GraphQLJSONObject,
-  });
+const genSchema = (typeDefs: any[], resolvers: any[]) => {
 
   return makeExecutableSchema({
-    typeDefs: mergeTypes(types),
-    resolvers: mergeResolvers(resolvers),
+    typeDefs: mergeTypes([RootSchema, ...typeDefs]),
+    resolvers: mergeResolvers([RootResolvers, ...resolvers]),
   })
 };
