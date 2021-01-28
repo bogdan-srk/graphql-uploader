@@ -1,10 +1,10 @@
 import { CreateImageInput, CreateImageInputSchema, MarkImageAsUploadedInput } from './types';
-import { ImageModel } from '../../../database/images';
 import Mongoose from 'mongoose';
 import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
-import { FilesStorage } from '../../../lib/files-storage';
 import mime from 'mime-types';
 import { ValidationError } from 'apollo-server';
+import { FilesStorage } from '../../../core/files-storage';
+import { ImageModel } from '../../../core/database/images';
 
 
 export const imagesResolvers = {

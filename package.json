@@ -10,14 +10,17 @@
     "apollo-server": "^2.19.2",
     "apollo-server-constraint-directive": "^1.2.7",
     "aws-sdk": "^2.831.0",
+    "glob": "latest",
     "graphql-constraint-directive": "^2.1.1",
     "graphql-type-json": "^0.3.2",
     "mime-types": "^2.1.28",
     "mongoose": "^5.11.13",
     "typescript": "^4.1.3",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "merge-graphql-schemas": "latest"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.3",
     "@types/mime-types": "^2.1.0",
     "ts-node": "^9.1.1"
   },
