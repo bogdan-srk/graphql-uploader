@@ -7,17 +7,20 @@
   "dependencies": {
     "@profusion/apollo-validation-directives": "^2.1.1",
     "@types/node": "^14.14.22",
+    "@types/yargs": "^16.0.0",
     "apollo-server": "^2.19.2",
     "apollo-server-constraint-directive": "^1.2.7",
     "aws-sdk": "^2.831.0",
     "glob": "latest",
     "graphql-constraint-directive": "^2.1.1",
     "graphql-type-json": "^0.3.2",
+    "merge-graphql-schemas": "latest",
     "mime-types": "^2.1.28",
+    "mongo-uri-builder": "^3.2.2",
     "mongoose": "^5.11.13",
     "typescript": "^4.1.3",
-    "yup": "^0.32.8",
-    "merge-graphql-schemas": "latest"
+    "yargs": "^16.2.0",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
@@ -26,7 +29,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./bin/index.js",
-    "dev": "ts-node ./src/index.ts"
+    "start": "node ./bin/index.js --settings ./settings.json",
+    "dev": "ts-node ./src/index.ts --settings ./settings.json"
   }
 }

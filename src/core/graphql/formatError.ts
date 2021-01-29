@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
 import { ApolloError, UserInputError } from 'apollo-server-errors';
-import yup from 'yup';
+import * as yup from 'yup';
 
 export const formatError = (error: GraphQLError) => {
   if (!(error instanceof ApolloError)) {

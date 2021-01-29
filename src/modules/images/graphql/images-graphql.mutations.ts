@@ -1,7 +1,11 @@
 import { CreateImageInput, MarkImageAsUploadedInput } from './images-graphql.types';
-import { CreateImageInputSchema, validateContentType, validateImageDocExists } from './images-graphql.validation';
+import {
+  CreateImageInputSchema,
+  MarkImageAsUploadedInputSchema,
+  validateContentType,
+  validateImageDocExists
+} from './images-graphql.validation';
 import mime from 'mime-types';
-import { FilesStorage } from '../../../core/files-storage';
 import { ResolverFn } from '../../../core/graphql';
 
 export const createImage: ResolverFn<{ input: CreateImageInput }> = async (
@@ -22,7 +26,7 @@ export const createImage: ResolverFn<{ input: CreateImageInput }> = async (
     input.mimeType,
   );
 
-  return await FilesStorage.createPresignedPost({
+  return service.FilesStorageService.createPresignedPost({
     key: imageDoc.file,
     id: imageDoc._id,
   });
@@ -33,7 +37,7 @@ export const markImageAsUploaded: ResolverFn<{ input: MarkImageAsUploadedInput }
   { input },
   { database, service }
 ) => {
-  await CreateImageInputSchema.validate(input, { abortEarly: false });
+  await MarkImageAsUploadedInputSchema.validate(input, { abortEarly: false });
 
   const imageDoc = await database.ImageModel.findOne({ _id: input.imageId });
 

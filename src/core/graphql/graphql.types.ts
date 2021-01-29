@@ -1,5 +1,5 @@
 import { IDatabaseProvider } from '../database';
-import { IServiceProvider } from '../service/service-provider.types';
+import { IServiceProvider } from '../service';
 
 export interface IResolverContext {
   database: IDatabaseProvider

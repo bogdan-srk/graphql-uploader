@@ -15,13 +15,11 @@ export class Database implements IDatabase {
   }
 
   async connect(uri: string): Promise<void> {
-    const connectionString = uri;
-
     if (this.connection) {
       return;
     }
 
-    await Mongoose.connect(connectionString, {
+    await Mongoose.connect(uri, {
       useNewUrlParser: true,
       useFindAndModify: true,
       useUnifiedTopology: true,

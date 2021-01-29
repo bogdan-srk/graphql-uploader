@@ -5,7 +5,7 @@ import { formatError } from './formatError';
 import { IResolverContext } from './graphql.types';
 import { RootResolvers } from './root-resolvers';
 import { RootSchema } from './root-schema';
-import { IServiceProvider } from '../service/service-provider.types';
+import { IServiceProvider } from '../service';
 
 export * from './graphql.types';
 
@@ -16,7 +16,6 @@ export const createGraphQLServer = async (
   resolvers: any[],
 ): Promise<ServerInfo> => {
   const config = {
-    debug: false,
     schema: genSchema(typeDefs, resolvers),
     formatError,
     context: async (): Promise<IResolverContext> => {

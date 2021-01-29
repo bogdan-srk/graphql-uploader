@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { IFilesStorage, IStorageSettings } from './files-storage.types';
+import { IFilesStorage, IS3StorageSettings } from './files-storage.types';
 
 
 export class S3FilesStorageService implements IFilesStorage {
@@ -8,7 +8,7 @@ export class S3FilesStorageService implements IFilesStorage {
   private readonly iamUserSecret: string;
   private readonly s3: AWS.S3;
 
-  constructor({ bucketName, iamUserKey, iamUserSecret }: IStorageSettings) {
+  constructor({ bucketName, iamUserKey, iamUserSecret }: IS3StorageSettings) {
     this.bucketName = bucketName;
     this.iamUserKey = iamUserKey;
     this.iamUserSecret = iamUserSecret;
@@ -38,9 +38,3 @@ export class S3FilesStorageService implements IFilesStorage {
     });
   }
 }
-
-export const FilesStorage = new S3FilesStorageService({
-  bucketName: 'graphql-images-test',
-  iamUserKey: 'AKIAWMKOAWUBY4W5A47P',
-  iamUserSecret: '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',
-});

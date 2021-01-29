@@ -3,7 +3,7 @@ import { IDatabaseProvider, IImageDocument } from '../../../core/database';
 import Mongoose from "mongoose";
 
 export class ImagesService implements IImagesService {
-    private readonly database: IDatabaseProvider;
+  private readonly database: IDatabaseProvider;
 
   constructor(database: IDatabaseProvider) {
     this.database = database;
@@ -26,6 +26,7 @@ export class ImagesService implements IImagesService {
       file: `${ key }.${ extension }`,
       mimeType: mimeType,
     });
+
     await imageDoc.save();
 
     return imageDoc;
